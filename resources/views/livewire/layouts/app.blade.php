@@ -96,8 +96,8 @@
                             </div>
                             <ul role="list" class="-mx-2 mt-2 space-y-1">
                                 <li>
-                                    <a href="#"
-                                        class="text-gray-700 hover:text-blue-700 hover:bg-gray-50 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+                                    <a href="{{ route('plans') }}"
+                                        class=" hover:text-blue-700 hover:bg-gray-50 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700 {{ request()->routeIs('plans') ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-700 hover:text-blue-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700' }}"
                                         wire:navigate>
                                         <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor">
