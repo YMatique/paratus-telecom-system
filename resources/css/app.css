@@ -179,7 +179,7 @@
 
     /* Tabelas responsivas */
     .table-container {
-        @apply overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg;
+        @apply overflow-hidden shadow ring-1 ring-black/5 md:rounded-lg;
     }
 
     .table {
