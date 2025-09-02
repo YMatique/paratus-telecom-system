@@ -340,7 +340,7 @@
         <!-- Main content -->
         <div class="lg:pl-72">
             <main class="py-6">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="mx-auto px-4 sm:px-6 lg:px-8">
                     <!-- Page header -->
                     @if(isset($pageTitle) || isset($pageDescription))
                     <div class="mb-8">
