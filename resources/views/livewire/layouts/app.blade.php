@@ -398,5 +398,8 @@
 
     @livewireScripts
     <script src="//unpkg.com/alpinejs" defer></script>
+
+     <!-- Toast Notifications -->
+    <x-toast />
 </body>
 </html>
