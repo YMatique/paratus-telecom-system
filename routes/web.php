@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Dashboard;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -9,10 +10,11 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Route::view('dashboard', 'dashboard')
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
 
+Route::get('/dashboard', Dashboard::class)->name('dashboard');
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
