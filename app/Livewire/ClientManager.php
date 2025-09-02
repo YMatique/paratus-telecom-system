@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Livewire\Concerns\WithToast;
+use App\Models\Customer;
 use App\Models\Plan;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -10,69 +11,103 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Layout('livewire.layouts.app')]
+#[Title('Gestão de Clientes')]
 class ClientManager extends Component
 {
     use WithToast;
     use WithPagination;
-    #[Layout('livewire.layouts.app')]
-    #[Title('Gestão de Planos')]
 
-
-
-
-
-    public $activeTab = 'list'; // list, create, edit, promotions
-    public $showModal = false;
-    public $selectedPlan = null;
+     // Navegação e Estado
+    public $activeTab = 'list'; // list, create, edit, view, addresses
+    public $selectedCustomer = null;
+    public $selectedAddress = null;
 
     // Filtros
     public $search = '';
-    public $filterConnectionType = 'all'; // all, fiber, radio, adsl
-    public $filterCustomerType = 'all'; // all, individual, company, both
-    public $filterStatus = 'all'; // all, active, inactive
-    public $sortField = 'sort_order'; // name, price, download_speed, sort_order
-    public $sortDirection = 'asc';
+    public $filterType = 'all'; // all, individual, company
+    public $filterStatus = 'all'; // all, active, suspended, inactive
+    public $filterDocument = 'all'; // all, bi, nuit, passport
+    public $sortField = 'created_at';
+    public $sortDirection = 'desc';
 
-    // Formulário
+    // Formulário Cliente
+    #[Validate('required|in:individual,company')]
+    public $type = 'individual';
+
     #[Validate('required|string|max:255')]
     public $name = '';
 
+    #[Validate('required|string|max:50|unique:customers,document')]
+    public $document = '';
+
+    #[Validate('required|in:bi,nuit,passport')]
+    public $document_type = 'bi';
+
+    #[Validate('nullable|email|max:255')]
+    public $email = '';
+
+    #[Validate('nullable|string|max:20')]
+    public $phone = '';
+
+    #[Validate('nullable|string|max:20')]
+    public $whatsapp = '';
+
+    #[Validate('nullable|string|max:255')]
+    public $company_name = '';
+
+    #[Validate('required|in:active,suspended,inactive')]
+    public $status = 'active';
+
     #[Validate('nullable|string|max:1000')]
-    public $description = '';
+    public $notes = '';
 
-    #[Validate('required|integer|min:1|max:10000')]
-    public $download_speed = '';
+    // Formulário Endereço
+    public $showAddressModal = false;
+    public $editingAddressId = null;
 
-    #[Validate('required|integer|min:1|max:10000')]
-    public $upload_speed = '';
+    #[Validate('required|in:installation,billing,correspondence')]
+    public $address_type = 'installation';
 
-    #[Validate('required|numeric|min:0|max:999999.99')]
-    public $price = '';
+    #[Validate('required|string|max:255')]
+    public $street = '';
 
-    #[Validate('required|in:monthly,quarterly,annual')]
-    public $billing_cycle = 'monthly';
+    #[Validate('nullable|string|max:50')]
+    public $number = '';
+
+    #[Validate('required|string|max:100')]
+    public $neighborhood = '';
+
+    #[Validate('required|string|max:100')]
+    public $district = '';
+
+    #[Validate('required|string|max:100')]
+    public $city = '';
+
+    #[Validate('required|string|max:100')]
+    public $province = '';
+
+    #[Validate('nullable|string|max:8')]
+    public $postal_code = '';
+
+    #[Validate('nullable|string|max:255')]
+    public $reference = '';
+
+    #[Validate('nullable|numeric|between:-90,90')]
+    public $latitude = '';
+
+    #[Validate('nullable|numeric|between:-180,180')]
+    public $longitude = '';
 
     #[Validate('boolean')]
-    public $unlimited_data = true;
+    public $is_primary = false;
 
-    #[Validate('nullable|integer|min:1|max:999999')]
-    public $data_limit_gb = null;
-
-    #[Validate('required|in:fiber,radio,adsl')]
-    public $connection_type = 'fiber';
-
-    #[Validate('required|in:individual,company,both')]
-    public $customer_type = 'both';
-
-    #[Validate('boolean')]
-    public $is_active = true;
-
-    #[Validate('integer|min:0')]
-    public $sort_order = 0;
+    // Bulk Actions
+    public $selectedCustomers = [];
 
     protected $listeners = [
-        'planDeleted' => '$refresh',
-        'planUpdated' => '$refresh',
+        'customerDeleted' => '$refresh',
+        'addressDeleted' => '$refresh',
     ];
 
     public function mount()
@@ -80,17 +115,13 @@ class ClientManager extends Component
         $this->resetPage();
     }
 
+    // Watchers para filtros
     public function updatedSearch()
     {
         $this->resetPage();
     }
 
-    public function updatedFilterConnectionType()
-    {
-        $this->resetPage();
-    }
-
-    public function updatedFilterCustomerType()
+    public function updatedFilterType()
     {
         $this->resetPage();
     }
@@ -100,7 +131,12 @@ class ClientManager extends Component
         $this->resetPage();
     }
 
-    // Navegação entre tabs
+    public function updatedFilterDocument()
+    {
+        $this->resetPage();
+    }
+
+    // Navegação
     public function setActiveTab($tab)
     {
         $this->activeTab = $tab;
@@ -119,188 +155,287 @@ class ClientManager extends Component
         $this->resetPage();
     }
 
-    // CRUD Operations
-    public function createPlan()
+    // =====================================
+    // CRUD CLIENTES
+    // =====================================
+
+    public function createCustomer()
     {
-        $this->resetForm();
+        $this->resetCustomerForm();
         $this->activeTab = 'create';
     }
 
-    public function editPlan($planId)
+    public function editCustomer($customerId)
     {
-        $plan = Plan::findOrFail($planId);
-        $this->selectedPlan = $plan;
-        $this->fillForm($plan);
+        $customer = Customer::findOrFail($customerId);
+        $this->selectedCustomer = $customer;
+        $this->fillCustomerForm($customer);
         $this->activeTab = 'edit';
     }
 
-    public function savePlan()
+    public function viewCustomer($customerId)
     {
+        $this->selectedCustomer = Customer::with(['addresses', 'subscriptions', 'invoices', 'tickets'])->findOrFail($customerId);
+        $this->activeTab = 'view';
+    }
+
+    public function saveCustomer()
+    {
+        // Atualizar validação para edição
+        if ($this->selectedCustomer) {
+            $this->validate([
+                'document' => 'required|string|max:50|unique:customers,document,' . $this->selectedCustomer->id,
+            ]);
+        }
+        
         $this->validate();
 
         $data = [
+            'type' => $this->type,
             'name' => $this->name,
-            'description' => $this->description,
-            'download_speed' => $this->download_speed,
-            'upload_speed' => $this->upload_speed,
-            'price' => $this->price,
-            'billing_cycle' => $this->billing_cycle,
-            'unlimited_data' => $this->unlimited_data,
-            'data_limit_gb' => $this->unlimited_data ? null : $this->data_limit_gb,
-            'connection_type' => $this->connection_type,
-            'customer_type' => $this->customer_type,
-            'is_active' => $this->is_active,
-            'sort_order' => $this->sort_order,
+            'document' => $this->document,
+            'document_type' => $this->document_type,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'whatsapp' => $this->whatsapp,
+            'company_name' => $this->company_name,
+            'status' => $this->status,
+            'notes' => $this->notes,
         ];
 
-        if ($this->selectedPlan) {
+        if ($this->selectedCustomer) {
             // Update
-            $this->selectedPlan->update($data);
-            // session()->flash('message', 'Plano atualizado com sucesso!');
-                 $this->toastSuccess('Cliente salvo!', 'Dados atualizados com sucesso.');
+            $this->selectedCustomer->update($data);
+            session()->flash('message', 'Cliente atualizado com sucesso!');
         } else {
             // Create
-            Plan::create($data);
-            session()->flash('message', 'Plano criado com sucesso!');
+            Customer::create($data);
+            session()->flash('message', 'Cliente criado com sucesso!');
         }
 
-        $this->resetForm();
+        $this->resetCustomerForm();
         $this->activeTab = 'list';
     }
 
-    public function toggleStatus($planId)
+    public function deleteCustomer($customerId)
     {
-        $plan = Plan::findOrFail($planId);
-        $plan->update(['is_active' => !$plan->is_active]);
-
-        $status = $plan->is_active ? 'ativado' : 'desativado';
-        session()->flash('message', "Plano {$status} com sucesso!");
-    }
-
-    public function duplicatePlan($planId)
-    {
-        $plan = Plan::findOrFail($planId);
-        $newPlan = $plan->replicate();
-        $newPlan->name = $plan->name . ' (Cópia)';
-        $newPlan->is_active = false;
-        $newPlan->save();
-
-        session()->flash('message', 'Plano duplicado com sucesso!')  ;
+        $customer = Customer::findOrFail($customerId);
         
-    }
-
-    public function deletePlan($planId)
-    {
-        $plan = Plan::findOrFail($planId);
-
         // Verificar se tem subscrições ativas
-        if ($plan->subscriptions()->where('status', 'active')->exists()) {
-            session()->flash('error', 'Não é possível excluir um plano com subscrições ativas.');
+        if ($customer->subscriptions()->where('status', 'active')->exists()) {
+            session()->flash('error', 'Não é possível excluir cliente com subscrições ativas.');
             return;
         }
 
-        $plan->delete();
-        session()->flash('message', 'Plano excluído com sucesso!');
+        $customer->delete();
+        session()->flash('message', 'Cliente excluído com sucesso!');
     }
 
-    // Helpers
-    private function resetForm()
+    // =====================================
+    // CRUD ENDEREÇOS
+    // =====================================
+
+    public function manageAddresses($customerId)
     {
-        $this->reset([
-            'name',
-            'description',
-            'download_speed',
-            'upload_speed',
-            'price',
-            'billing_cycle',
-            'unlimited_data',
-            'data_limit_gb',
-            'connection_type',
-            'customer_type',
-            'is_active',
-            'sort_order'
+        $this->selectedCustomer = Customer::with('addresses')->findOrFail($customerId);
+        $this->activeTab = 'addresses';
+    }
+
+    public function createAddress()
+    {
+        $this->resetAddressForm();
+        $this->showAddressModal = true;
+    }
+
+    public function editAddress($addressId)
+    {
+        $address = Address::findOrFail($addressId);
+        $this->selectedAddress = $address;
+        $this->fillAddressForm($address);
+        $this->editingAddressId = $addressId;
+        $this->showAddressModal = true;
+    }
+
+    public function saveAddress()
+    {
+        $this->validate([
+            'address_type' => 'required|in:installation,billing,correspondence',
+            'street' => 'required|string|max:255',
+            'number' => 'nullable|string|max:50',
+            'neighborhood' => 'required|string|max:100',
+            'district' => 'required|string|max:100',
+            'city' => 'required|string|max:100',
+            'province' => 'required|string|max:100',
+            'postal_code' => 'nullable|string|max:8',
+            'reference' => 'nullable|string|max:255',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+            'is_primary' => 'boolean',
         ]);
-        $this->selectedPlan = null;
-        $this->billing_cycle = 'monthly';
-        $this->unlimited_data = true;
-        $this->connection_type = 'fiber';
-        $this->customer_type = 'both';
-        $this->is_active = true;
-        $this->sort_order = Plan::max('sort_order') + 1 ?? 0;
+
+        $data = [
+            'customer_id' => $this->selectedCustomer->id,
+            'type' => $this->address_type,
+            'street' => $this->street,
+            'number' => $this->number,
+            'neighborhood' => $this->neighborhood,
+            'district' => $this->district,
+            'city' => $this->city,
+            'province' => $this->province,
+            'postal_code' => $this->postal_code,
+            'reference' => $this->reference,
+            'latitude' => $this->latitude ?: null,
+            'longitude' => $this->longitude ?: null,
+            'is_primary' => $this->is_primary,
+        ];
+
+        if ($this->editingAddressId) {
+            // Update
+            Address::find($this->editingAddressId)->update($data);
+            session()->flash('message', 'Endereço atualizado com sucesso!');
+        } else {
+            // Create
+            Address::create($data);
+            session()->flash('message', 'Endereço criado com sucesso!');
+        }
+
+        // Se for primário, remover primário de outros
+        if ($this->is_primary) {
+            Address::where('customer_id', $this->selectedCustomer->id)
+                  ->where('id', '!=', $this->editingAddressId ?? 0)
+                  ->update(['is_primary' => false]);
+        }
+
+        $this->resetAddressForm();
+        $this->showAddressModal = false;
+        $this->selectedCustomer->refresh();
     }
 
-    private function fillForm(Plan $plan)
+    public function deleteAddress($addressId)
     {
-        $this->name = $plan->name;
-        $this->description = $plan->description;
-        $this->download_speed = $plan->download_speed;
-        $this->upload_speed = $plan->upload_speed;
-        $this->price = $plan->price;
-        $this->billing_cycle = $plan->billing_cycle;
-        $this->unlimited_data = $plan->unlimited_data;
-        $this->data_limit_gb = $plan->data_limit_gb;
-        $this->connection_type = $plan->connection_type;
-        $this->customer_type = $plan->customer_type;
-        $this->is_active = $plan->is_active;
-        $this->sort_order = $plan->sort_order;
+        Address::findOrFail($addressId)->delete();
+        session()->flash('message', 'Endereço excluído com sucesso!');
+        $this->selectedCustomer->refresh();
     }
 
-    // Quick Actions
-    public function quickToggleStatus($planId)
-    {
-        $this->toggleStatus($planId);
-    }
+    // =====================================
+    // BULK ACTIONS
+    // =====================================
 
-    // Bulk Actions
-    public $selectedPlans = [];
-
-    public function selectAllPlans()
+    public function selectAllCustomers()
     {
-        $this->selectedPlans = $this->getPlansQuery()->pluck('id')->toArray();
+        $this->selectedCustomers = $this->getCustomersQuery()->pluck('id')->toArray();
     }
 
     public function bulkActivate()
     {
-        Plan::whereIn('id', $this->selectedPlans)->update(['is_active' => true]);
-        $this->selectedPlans = [];
-        session()->flash('message', 'Planos ativados com sucesso!');
+        Customer::whereIn('id', $this->selectedCustomers)->update(['status' => 'active']);
+        $this->selectedCustomers = [];
+        session()->flash('message', 'Clientes ativados com sucesso!');
+    }
+
+    public function bulkSuspend()
+    {
+        Customer::whereIn('id', $this->selectedCustomers)->update(['status' => 'suspended']);
+        $this->selectedCustomers = [];
+        session()->flash('message', 'Clientes suspensos com sucesso!');
     }
 
     public function bulkDeactivate()
     {
-        Plan::whereIn('id', $this->selectedPlans)->update(['is_active' => false]);
-        $this->selectedPlans = [];
-        session()->flash('message', 'Planos desativados com sucesso!');
+        Customer::whereIn('id', $this->selectedCustomers)->update(['status' => 'inactive']);
+        $this->selectedCustomers = [];
+        session()->flash('message', 'Clientes desativados com sucesso!');
+    }
+
+    // =====================================
+    // HELPERS
+    // =====================================
+
+    private function resetCustomerForm()
+    {
+        $this->reset([
+            'type', 'name', 'document', 'document_type', 'email', 'phone',
+            'whatsapp', 'company_name', 'status', 'notes'
+        ]);
+        $this->selectedCustomer = null;
+        $this->type = 'individual';
+        $this->document_type = 'bi';
+        $this->status = 'active';
+        $this->resetErrorBag();
+    }
+
+    private function fillCustomerForm(Customer $customer)
+    {
+        $this->type = $customer->type;
+        $this->name = $customer->name;
+        $this->document = $customer->document;
+        $this->document_type = $customer->document_type;
+        $this->email = $customer->email;
+        $this->phone = $customer->phone;
+        $this->whatsapp = $customer->whatsapp;
+        $this->company_name = $customer->company_name;
+        $this->status = $customer->status;
+        $this->notes = $customer->notes;
+    }
+
+    private function resetAddressForm()
+    {
+        $this->reset([
+            'address_type', 'street', 'number', 'neighborhood', 'district',
+            'city', 'province', 'postal_code', 'reference', 'latitude', 
+            'longitude', 'is_primary'
+        ]);
+        $this->selectedAddress = null;
+        $this->editingAddressId = null;
+        $this->address_type = 'installation';
+        $this->is_primary = false;
+        $this->resetErrorBag();
+    }
+
+    private function fillAddressForm(Address $address)
+    {
+        $this->address_type = $address->type;
+        $this->street = $address->street;
+        $this->number = $address->number;
+        $this->neighborhood = $address->neighborhood;
+        $this->district = $address->district;
+        $this->city = $address->city;
+        $this->province = $address->province;
+        $this->postal_code = $address->postal_code;
+        $this->reference = $address->reference;
+        $this->latitude = $address->latitude;
+        $this->longitude = $address->longitude;
+        $this->is_primary = $address->is_primary;
     }
 
     // Query Builder
-    private function getPlansQuery()
+    private function getCustomersQuery()
     {
-        $query = Plan::query();
+        $query = Customer::query();
 
         // Search
         if ($this->search) {
-            $query->where(function ($q) {
+            $query->where(function($q) {
                 $q->where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%');
+                  ->orWhere('email', 'like', '%' . $this->search . '%')
+                  ->orWhere('document', 'like', '%' . $this->search . '%')
+                  ->orWhere('phone', 'like', '%' . $this->search . '%')
+                  ->orWhere('company_name', 'like', '%' . $this->search . '%');
             });
         }
 
         // Filters
-        if ($this->filterConnectionType !== 'all') {
-            $query->where('connection_type', $this->filterConnectionType);
-        }
-
-        if ($this->filterCustomerType !== 'all') {
-            if ($this->filterCustomerType === 'both') {
-                $query->where('customer_type', 'both');
-            } else {
-                $query->whereIn('customer_type', [$this->filterCustomerType, 'both']);
-            }
+        if ($this->filterType !== 'all') {
+            $query->where('type', $this->filterType);
         }
 
         if ($this->filterStatus !== 'all') {
-            $query->where('is_active', $this->filterStatus === 'active');
+            $query->where('status', $this->filterStatus);
+        }
+
+        if ($this->filterDocument !== 'all') {
+            $query->where('document_type', $this->filterDocument);
         }
 
         // Sorting
@@ -309,21 +444,19 @@ class ClientManager extends Component
         return $query;
     }
 
-
     public function render()
     {
-        $plans = $this->getPlansQuery()->paginate(10);
+       $customers = $this->getCustomersQuery()->paginate(15);
 
-        // Stats para dashboard
+        // Stats
         $stats = [
-            'total' => Plan::count(),
-            'active' => Plan::where('is_active', true)->count(),
-            'fiber' => Plan::where('connection_type', 'fiber')->count(),
-            'radio' => Plan::where('connection_type', 'radio')->count(),
+            'total' => Customer::count(),
+            'active' => Customer::where('status', 'active')->count(),
+            'individual' => Customer::where('type', 'individual')->count(),
+            'company' => Customer::where('type', 'company')->count(),
         ];
-
-        return view('livewire.client-manager', [
-            'plans' => $plans,
+        return view('livewire.client-manager',[
+            'customers' => $customers,
             'stats' => $stats,
         ]);
     }
