@@ -305,11 +305,11 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tipo de Cliente *</label>
                         <div class="flex space-x-4">
                             <label class="flex items-center">
-                                <input wire:model.live="type" type="radio" value="individual" class="text-blue-600 focus:ring-blue-500">
+                                <input wire:model.live="type" name="customer_type" type="radio" value="individual" class="text-blue-600 focus:ring-blue-500">
                                 <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Pessoa Física</span>
                             </label>
                             <label class="flex items-center">
-                                <input wire:model.live="type" type="radio" value="company" class="text-blue-600 focus:ring-blue-500">
+                                <input wire:model.live="type" name="customer_type" type="radio" value="company" class="text-blue-600 focus:ring-blue-500">
                                 <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Empresa</span>
                             </label>
                         </div>
