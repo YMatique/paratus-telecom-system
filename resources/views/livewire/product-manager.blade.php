@@ -425,7 +425,7 @@
                         <input wire:model="name" 
                                type="text" 
                                id="name"
-                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                               class="mt-1 px-3 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
                                placeholder="Ex: Modem ADSL TP-Link">
                         @error('name')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -437,7 +437,7 @@
                         <label for="category" class="block text-sm font-medium text-gray-700">Categoria *</label>
                         <select wire:model="category" 
                                 id="category"
-                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                class="mt-1 px-3 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                             @foreach($categories as $key => $label)
                                 <option value="{{ $key }}">{{ $label }}</option>
                             @endforeach
@@ -466,7 +466,7 @@
                         <input wire:model="brand" 
                                type="text" 
                                id="brand"
-                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                               class="mt-1 px-3 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
                                placeholder="Ex: TP-Link, Huawei, Mikrotik">
                         @error('brand')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -479,7 +479,7 @@
                         <input wire:model="model" 
                                type="text" 
                                id="model"
-                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                               class="mt-1 px-3 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
                                placeholder="Ex: TD-W8961N, HG8245H">
                         @error('model')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -489,13 +489,13 @@
                     {{-- Preço de Venda --}}
                     <div>
                         <label for="sale_price" class="block text-sm font-medium text-gray-700">Preço de Venda (MT)</label>
-                        <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="mt-1  relative rounded-md shadow-sm">
                             <input wire:model="sale_price" 
                                    type="number" 
                                    step="0.01" 
                                    min="0"
                                    id="sale_price"
-                                   class="block w-full pr-12 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                                   class="block w-full px-3 py-2 pr-8 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
                                    placeholder="0.00">
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">MT</span>
@@ -509,13 +509,13 @@
                     {{-- Preço de Aluguel --}}
                     <div>
                         <label for="rental_price" class="block text-sm font-medium text-gray-700">Preço de Aluguel Mensal (MT)</label>
-                        <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="mt-1  relative rounded-md shadow-sm">
                             <input wire:model="rental_price" 
                                    type="number" 
                                    step="0.01" 
                                    min="0"
                                    id="rental_price"
-                                   class="block w-full pr-12 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                                   class="block w-full px-3 py-2 pr-12 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
                                    placeholder="0.00">
                             <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">MT</span>
@@ -533,7 +533,7 @@
                                type="number" 
                                min="0"
                                id="stock_quantity"
-                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                               class="mt-1 px-3 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
                                placeholder="0">
                         @error('stock_quantity')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -547,9 +547,9 @@
                                type="number" 
                                min="1"
                                id="min_stock_alert"
-                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                               class="mt-1 px-3 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
                                placeholder="5">
-                        <p class="mt-1 text-sm text-gray-500">Você será alertado quando o estoque atingir este valor</p>
+                        <p class="mt-1 px-3 py-2 text-sm text-gray-500">Você será alertado quando o estoque atingir este valor</p>
                         @error('min_stock_alert')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -561,7 +561,7 @@
                         <textarea wire:model="description" 
                                   id="description"
                                   rows="3"
-                                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                                  class="mt-1 px-3 py-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
                                   placeholder="Descrição detalhada do produto, especificações técnicas, etc..."></textarea>
                         @error('description')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -655,9 +655,9 @@
                                                type="number" 
                                                min="1" 
                                                id="stockQuantity"
-                                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                               class="mt-1 px-3 py-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                         @error('stockQuantity')
-                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                            <p class="mt-1 px-3 py-2 text-sm text-red-600">{{ $message }}</p>
                                         @enderror
                                     </div>
                                     <div>
@@ -665,10 +665,10 @@
                                         <input wire:model="stockReason" 
                                                type="text" 
                                                id="stockReason"
-                                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
+                                               class="mt-1 px-3 py-2 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
                                                placeholder="Ex: Compra, venda, avaria, ajuste de inventário...">
                                         @error('stockReason')
-                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                            <p class="mt-1 px-3 py-2 text-sm text-red-600">{{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>
