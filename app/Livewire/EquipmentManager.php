@@ -75,6 +75,9 @@ class EquipmentManager extends Component
         'equipmentUpdated' => '$refresh',
     ];
 
+    // Rules
+    protected $rules = [];
+
     public function mount()
     {
         $this->loadSelectData();
