@@ -2,6 +2,7 @@
 
 use App\Livewire\ClientManager;
 use App\Livewire\Dashboard;
+use App\Livewire\EquipmentManager;
 use App\Livewire\InvoiceManager;
 use App\Livewire\NotificationManager;
 use App\Livewire\PlanManager;
@@ -29,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('plans', PlanManager::class)->name('plans');
 
     Route::get('products', ProductManager::class)->name('products');
+    Route::get('equipments', EquipmentManager::class)->name('equipments');
 
     Route::get('subscriptions', SubscriptionManager::class)->name('subscriptions');
 
