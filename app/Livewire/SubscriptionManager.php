@@ -15,8 +15,8 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-    #[Layout('livewire.layouts.app')]
-    #[Title('Gestão de Subscrições')]
+#[Layout('livewire.layouts.app')]
+#[Title('Gestão de Subscrições')]
 class SubscriptionManager extends Component
 {
 
@@ -36,38 +36,38 @@ class SubscriptionManager extends Component
 
     // Wizard de Criação (Step by Step)
     public $wizardStep = 1; // 1: Cliente, 2: Plano, 3: Configuração
-    
+
     // Dados para Criação/Edição
     #[Validate('required|exists:customers,id')]
     public $customer_id = '';
-    
+
     #[Validate('required|exists:plans,id')]
     public $plan_id = '';
-    
+
     #[Validate('required|exists:addresses,id')]
     public $installation_address_id = '';
-    
+
     #[Validate('required|date')]
     public $start_date = '';
-    
+
     #[Validate('nullable|date|after:start_date')]
     public $end_date = '';
-    
+
     #[Validate('required|in:active,suspended,cancelled,pending_installation')]
     public $status = 'pending_installation';
-    
+
     #[Validate('required|numeric|min:0')]
-    public $monthly_price = '';
-    
+    public $monthly_price = 0;
+
     #[Validate('required|numeric|min:0')]
-    public $installation_fee = '';
-    
+    public $installation_fee = 0;
+
     #[Validate('required|boolean')]
     public $auto_renew = true;
-    
+
     #[Validate('required|integer|min:1|max:28')]
     public $billing_day = 1;
-    
+
     #[Validate('nullable|string|max:1000')]
     public $notes = '';
 
@@ -104,7 +104,7 @@ class SubscriptionManager extends Component
         $this->customers = Customer::active()
             ->orderBy('name')
             ->get(['id', 'name', 'document', 'type']);
-            
+
         $this->plans = Plan::active()
             ->orderBy('name')
             ->get(['id', 'name', 'price', 'download_speed', 'upload_speed']);
@@ -128,11 +128,17 @@ class SubscriptionManager extends Component
     public function viewSubscription($subscriptionId)
     {
         $this->selectedSubscription = Subscription::with([
-            'customer', 'plan', 'installationAddress', 
-            'invoices' => function($q) { $q->latest()->take(5); },
-            'tickets' => function($q) { $q->latest()->take(3); }
+            'customer',
+            'plan',
+            'installationAddress',
+            'invoices' => function ($q) {
+                $q->latest()->take(5);
+            },
+            'tickets' => function ($q) {
+                $q->latest()->take(3);
+            }
         ])->findOrFail($subscriptionId);
-        
+
         $this->activeTab = 'view';
     }
 
@@ -152,11 +158,13 @@ class SubscriptionManager extends Component
             $this->loadAddressesForCustomer($this->customer_id);
             $this->selectedCustomer = Customer::find($this->customer_id);
         } elseif ($this->wizardStep == 2) {
-            $this->validateOnly('plan_id', 'installation_address_id');
+            // $this->validateOnly('plan_id', 'installation_address_id');
+            $this->validateOnly('plan_id');
+            $this->validateOnly('installation_address_id');
             $this->selectedPlan = Plan::find($this->plan_id);
             $this->monthly_price = $this->selectedPlan->price;
         }
-        
+
         $this->wizardStep++;
     }
 
@@ -220,7 +228,7 @@ class SubscriptionManager extends Component
     {
         try {
             $subscription = Subscription::findOrFail($subscriptionId);
-            
+
             if (!$subscription->canBeSuspended()) {
                 $this->toastError('Esta subscrição não pode ser suspensa');
                 return;
@@ -228,8 +236,8 @@ class SubscriptionManager extends Component
 
             $subscription->update([
                 'status' => 'suspended',
-                'notes' => $subscription->notes . "\n" . 'Suspensa em ' . now()->format('d/m/Y H:i') . 
-                          ($reason ? " - Motivo: $reason" : '')
+                'notes' => $subscription->notes . "\n" . 'Suspensa em ' . now()->format('d/m/Y H:i') .
+                    ($reason ? " - Motivo: $reason" : '')
             ]);
 
             $this->toastSuccess('Subscrição suspensa com sucesso!');
@@ -242,7 +250,7 @@ class SubscriptionManager extends Component
     {
         try {
             $subscription = Subscription::findOrFail($subscriptionId);
-            
+
             // Recalcular próxima data de faturamento
             $nextBillingDate = now()->day($subscription->billing_day);
             if ($nextBillingDate->isPast()) {
@@ -265,7 +273,7 @@ class SubscriptionManager extends Component
     {
         try {
             $subscription = Subscription::findOrFail($subscriptionId);
-            
+
             if (!$subscription->canBeCancelled()) {
                 $this->toastError('Esta subscrição não pode ser cancelada');
                 return;
@@ -274,8 +282,8 @@ class SubscriptionManager extends Component
             $subscription->update([
                 'status' => 'cancelled',
                 'end_date' => now()->toDateString(),
-                'notes' => $subscription->notes . "\n" . 'Cancelada em ' . now()->format('d/m/Y H:i') . 
-                          ($reason ? " - Motivo: $reason" : '')
+                'notes' => $subscription->notes . "\n" . 'Cancelada em ' . now()->format('d/m/Y H:i') .
+                    ($reason ? " - Motivo: $reason" : '')
             ]);
 
             $this->toastSuccess('Subscrição cancelada com sucesso!');
@@ -294,7 +302,7 @@ class SubscriptionManager extends Component
 
         try {
             $count = count($this->selectedSubscriptions);
-            
+
             switch ($this->bulkAction) {
                 case 'suspend':
                     Subscription::whereIn('id', $this->selectedSubscriptions)
@@ -302,7 +310,7 @@ class SubscriptionManager extends Component
                         ->update(['status' => 'suspended']);
                     $this->toastSuccess("$count subscrições suspensas");
                     break;
-                    
+
                 case 'reactivate':
                     Subscription::whereIn('id', $this->selectedSubscriptions)
                         ->where('status', 'suspended')
@@ -322,11 +330,20 @@ class SubscriptionManager extends Component
     private function resetForm()
     {
         $this->reset([
-            'customer_id', 'plan_id', 'installation_address_id', 'start_date',
-            'end_date', 'status', 'monthly_price', 'installation_fee',
-            'auto_renew', 'billing_day', 'notes', 'wizardStep'
+            'customer_id',
+            'plan_id',
+            'installation_address_id',
+            'start_date',
+            'end_date',
+            'status',
+            'monthly_price',
+            'installation_fee',
+            'auto_renew',
+            'billing_day',
+            'notes',
+            'wizardStep'
         ]);
-        
+
         $this->selectedSubscription = null;
         $this->selectedCustomer = null;
         $this->selectedPlan = null;
@@ -359,10 +376,10 @@ class SubscriptionManager extends Component
 
         // Search
         if ($this->search) {
-            $query->whereHas('customer', function($q) {
+            $query->whereHas('customer', function ($q) {
                 $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('document', 'like', '%' . $this->search . '%');
-            })->orWhereHas('plan', function($q) {
+                    ->orWhere('document', 'like', '%' . $this->search . '%');
+            })->orWhereHas('plan', function ($q) {
                 $q->where('name', 'like', '%' . $this->search . '%');
             });
         }
@@ -378,10 +395,10 @@ class SubscriptionManager extends Component
 
         if ($this->filterDueDate === 'due_soon') {
             $query->where('next_invoice_date', '<=', now()->addDays(7)->toDateString())
-                  ->where('status', 'active');
+                ->where('status', 'active');
         } elseif ($this->filterDueDate === 'overdue') {
             $query->where('next_invoice_date', '<', now()->toDateString())
-                  ->where('status', 'active');
+                ->where('status', 'active');
         }
 
         // Sorting
@@ -409,7 +426,7 @@ class SubscriptionManager extends Component
             'stats' => $stats,
         ]);
     }
-      public function boot()
+    public function boot()
     {
         view()->share([
             'pageTitle' => 'Gestão de Subscrições',
