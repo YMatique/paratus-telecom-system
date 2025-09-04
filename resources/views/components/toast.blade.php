@@ -7,14 +7,14 @@
         message: '',
         
         showToast(data) {
-            this.type = data.type || 'success';
-            this.title = data.title || '';
-            this.message = data.message || '';
+            this.type = data[0].type || 'success';
+            this.title = data[0].title || '';
+            this.message = data[0].message || '';
             this.show = true;
             
-            console.log(data);
+            {{-- console.log(data); --}}
             // Auto hide after 5 seconds
-            setTimeout(() => { this.show = false }, 10000);
+            setTimeout(() => { this.show = false }, 5000);
         }
     }"
     x-on:toast.window="showToast($event.detail)"
@@ -25,7 +25,7 @@
     x-transition:leave="transition ease-in duration-100"
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
-    class="fixed top-4 right-4 max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden z-50 dark:bg-gray-800 dark:ring-gray-700"
+    class="fixed top-4 right-4 max-w-sm w-full bg-white shadow-lg rounded-md pointer-events-auto ring-1 ring-zinc-700/75 overflow-hidden z-50 dark:bg-gray-800 dark:ring-gray-700"
     style="display: none;"
 >
     <div class="p-4">

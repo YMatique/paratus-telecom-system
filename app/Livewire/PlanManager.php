@@ -159,11 +159,12 @@ class PlanManager extends Component
             // Update
             $this->selectedPlan->update($data);
             // session()->flash('message', 'Plano atualizado com sucesso!');
-            $this->toastSuccess('Cliente salvo!', 'Dados atualizados com sucesso.');
+            $this->toastSuccess('Sucesso', 'Plano atualizado com sucesso.');
         } else {
             // Create
             Plan::create($data);
-            session()->flash('message', 'Plano criado com sucesso!');
+            // session()->flash('message', 'Plano criado com sucesso!');
+            $this->toastSuccess('Sucesso', 'Plano criado com sucesso.');
         }
 
         $this->resetForm();
@@ -196,12 +197,14 @@ class PlanManager extends Component
 
         // Verificar se tem subscrições ativas
         if ($plan->subscriptions()->where('status', 'active')->exists()) {
-            session()->flash('error', 'Não é possível excluir um plano com subscrições ativas.');
+            // session()->flash('error', 'Não é possível excluir um plano com subscrições ativas.');
+            $this->toastError('Erro', 'Não é possível excluir um plano com subscrições ativas.');
             return;
         }
 
         $plan->delete();
-        session()->flash('message', 'Plano excluído com sucesso!');
+        // session()->flash('message', 'Plano excluído com sucesso!');
+        $this->toastSuccess('Sucesso', 'Plano excluído com sucesso.');
     }
 
     // Helpers
