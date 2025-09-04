@@ -12,6 +12,7 @@
             this.message = data.message || '';
             this.show = true;
             
+            log(data);
             // Auto hide after 5 seconds
             setTimeout(() => { this.show = false }, 5000);
         }

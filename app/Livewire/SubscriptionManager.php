@@ -192,7 +192,7 @@ class SubscriptionManager extends Component
                     'plan_id' => $this->plan_id,
                     'installation_address_id' => $this->installation_address_id,
                     'start_date' => $this->start_date,
-                    'end_date' => $this->end_date,
+                    'end_date' =>  $this->end_date ?: null,
                     'status' => $this->status,
                     'monthly_price' => $this->monthly_price,
                     'installation_fee' => $this->installation_fee,
@@ -210,16 +210,17 @@ class SubscriptionManager extends Component
 
                 if ($this->activeTab === 'create') {
                     Subscription::create($data);
-                    $this->toastSuccess('Subscrição criada com sucesso!');
+                    $this->toastSuccess('Sucesso','Subscrição criada com sucesso!');
                 } else {
                     $this->selectedSubscription->update($data);
-                    $this->toastSuccess('Subscrição atualizada com sucesso!');
+                    $this->toastSuccess('Sucesso','Subscrição atualizada com sucesso!');
                 }
             });
 
             $this->goToList();
         } catch (\Exception $e) {
-            $this->toastError('Erro ao salvar subscrição: ' . $e->getMessage());
+            $this->toastError('Erro','Erro ao salvar subscrição: ' . $e->getMessage());
+            dd($e->getMessage());
         }
     }
 
