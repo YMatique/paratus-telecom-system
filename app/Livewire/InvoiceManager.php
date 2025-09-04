@@ -193,6 +193,7 @@ class InvoiceManager extends Component
             // Pre-popular com dados da subscrição
             $this->addSubscriptionItem($subscription);
             $this->calculateTotals();
+
         }
     }
 
@@ -557,4 +558,5 @@ class InvoiceManager extends Component
             ]
         ]);
     }
+    
 }
