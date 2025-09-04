@@ -12,9 +12,9 @@
             this.message = data.message || '';
             this.show = true;
             
-            log(data);
+            console.log(data);
             // Auto hide after 5 seconds
-            setTimeout(() => { this.show = false }, 5000);
+            setTimeout(() => { this.show = false }, 10000);
         }
     }"
     x-on:toast.window="showToast($event.detail)"

@@ -207,11 +207,11 @@ class ClientManager extends Component
         if ($this->selectedCustomer) {
             // Update
             $this->selectedCustomer->update($data);
-            session()->flash('message', 'Cliente atualizado com sucesso!');
+            $this->toastSuccess('Sucesso','Cliente atualizado com sucesso!');
         } else {
             // Create
             Customer::create($data);
-            session()->flash('message', 'Cliente criado com sucesso!');
+            $this->toastSuccess('Sucesso','Cliente criado com sucesso!');
         }
 
         $this->resetCustomerForm();
@@ -224,12 +224,14 @@ class ClientManager extends Component
         
         // Verificar se tem subscrições ativas
         if ($customer->subscriptions()->where('status', 'active')->exists()) {
-            session()->flash('error', 'Não é possível excluir cliente com subscrições ativas.');
+            // session()->flash('error', 'Não é possível excluir cliente com subscrições ativas.');
+            $this->toastError('Erro','Não é possível excluir cliente com subscrições ativas.');
             return;
         }
 
         $customer->delete();
-        session()->flash('message', 'Cliente excluído com sucesso!');
+        // session()->flash('message', 'Cliente excluído com sucesso!');
+        $this->toastSuccess('Sucesso','Cliente excluído com sucesso!');
     }
 
     // =====================================
