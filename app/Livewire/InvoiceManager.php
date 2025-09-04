@@ -165,11 +165,12 @@ class InvoiceManager extends Component
             $this->subscriptions = Subscription::where('customer_id', $customerId)
                 ->with('plan')
                 ->get();
-            
+            // dd($this->subscriptions);
             // Auto-selecionar subscrição ativa se houver apenas uma
             if ($this->subscriptions->count() === 1) {
                 $this->subscription_id = $this->subscriptions->first()->id;
-                $this->loadSubscriptionData($this->subscription_id);
+                // $this->updatedSubscriptionId($this->subscription_id);
+                // $this->loadSubscriptionData($this->subscription_id);
             }
         } else {
             $this->subscriptions = [];
