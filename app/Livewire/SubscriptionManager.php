@@ -7,8 +7,10 @@ use App\Models\Address;
 use App\Models\Customer;
 use App\Models\Plan;
 use App\Models\Subscription;
+use App\Services\InvoiceGenerationService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -202,6 +204,7 @@ class SubscriptionManager extends Component
                 ];
 
                 // Calcular próxima data de faturamento
+               /*
                 if ($this->status === 'active') {
                     $startDate = Carbon::parse($this->start_date);
                     $nextBillingDate = $startDate->copy()->addMonth()->day($this->billing_day);
@@ -215,12 +218,69 @@ class SubscriptionManager extends Component
                     $this->selectedSubscription->update($data);
                     $this->toastSuccess('Sucesso','Subscrição atualizada com sucesso!');
                 }
+                */
+                 $isNewSubscription = $this->activeTab === 'create';
+                $wasActivated = false;
+
+                if ($isNewSubscription) {
+                    $subscription = Subscription::create($data);
+                    $this->toastSuccess('Sucesso','Subscrição criada com sucesso!');
+                    
+                    // Se criada como ativa, marcar para gerar fatura
+                    if ($this->status === 'active') {
+                        $wasActivated = true;
+                    }
+                } else {
+                    $oldStatus = $this->selectedSubscription->status;
+                    $this->selectedSubscription->update($data);
+                    $this->toastSuccess('Sucesso','Subscrição atualizada com sucesso!');
+                    
+                    // Se mudou para ativo, marcar para gerar fatura
+                    if ($oldStatus !== 'active' && $this->status === 'active') {
+                        $wasActivated = true;
+                        $subscription = $this->selectedSubscription;
+                    }
+                }
+                 // 🎯 GERAR FATURA AUTOMÁTICA quando ativa
+                if ($wasActivated && isset($subscription)) {
+                    $this->generateInitialInvoice($subscription);
+                }
             });
 
             $this->goToList();
         } catch (\Exception $e) {
             $this->toastError('Erro','Erro ao salvar subscrição: ' . $e->getMessage());
             dd($e->getMessage());
+        }
+    }
+      /**
+     * 🚀 Gerar fatura inicial automaticamente
+     */
+    private function generateInitialInvoice(Subscription $subscription)
+    {
+        try {
+            Log::info("Tentando gerar fatura inicial para subscrição {$subscription->id}");
+            
+            $invoiceService = app(InvoiceGenerationService::class);
+            $invoice = $invoiceService->generateInvoiceForSubscription($subscription, now());
+            
+            if ($invoice) {
+                $this->toastSuccess(
+                    'Fatura Gerada!', 
+                    "Fatura {$invoice->invoice_number} criada automaticamente!"
+                );
+                Log::info("Fatura inicial {$invoice->invoice_number} gerada para subscrição {$subscription->id}");
+            } else {
+                Log::warning("Fatura inicial não foi gerada para subscrição {$subscription->id} - possivelmente já existe");
+            }
+            
+        } catch (\Exception $e) {
+            // Não falhar a subscrição por causa da fatura
+            $this->toastWarning(
+                'Atenção', 
+                'Subscrição criada, mas houve erro ao gerar fatura inicial. Verifique manualmente.'
+            );
+            Log::error("Erro ao gerar fatura inicial para subscrição {$subscription->id}: " . $e->getMessage());
         }
     }
 
@@ -264,11 +324,61 @@ class SubscriptionManager extends Component
                 'notes' => $subscription->notes . "\n" . 'Reativada em ' . now()->format('d/m/Y H:i')
             ]);
 
+            // 🎯 Gerar fatura para reativação
+            $this->generateInitialInvoice($subscription);
+
             $this->toastSuccess('Subscrição reativada com sucesso!');
         } catch (\Exception $e) {
             $this->toastError('Erro ao reativar subscrição');
         }
     }
+ 
+
+    // === SUBSCRIPTION ACTIONS ===
+    // public function suspendSubscription($subscriptionId, $reason = null)
+    // {
+    //     try {
+    //         $subscription = Subscription::findOrFail($subscriptionId);
+
+    //         if (!$subscription->canBeSuspended()) {
+    //             $this->toastError('Esta subscrição não pode ser suspensa');
+    //             return;
+    //         }
+
+    //         $subscription->update([
+    //             'status' => 'suspended',
+    //             'notes' => $subscription->notes . "\n" . 'Suspensa em ' . now()->format('d/m/Y H:i') .
+    //                 ($reason ? " - Motivo: $reason" : '')
+    //         ]);
+
+    //         $this->toastSuccess('Subscrição suspensa com sucesso!');
+    //     } catch (\Exception $e) {
+    //         $this->toastError('Erro ao suspender subscrição');
+    //     }
+    // }
+
+    // public function reactivateSubscription($subscriptionId)
+    // {
+    //     try {
+    //         $subscription = Subscription::findOrFail($subscriptionId);
+
+    //         // Recalcular próxima data de faturamento
+    //         $nextBillingDate = now()->day($subscription->billing_day);
+    //         if ($nextBillingDate->isPast()) {
+    //             $nextBillingDate->addMonth();
+    //         }
+
+    //         $subscription->update([
+    //             'status' => 'active',
+    //             'next_invoice_date' => $nextBillingDate->toDateString(),
+    //             'notes' => $subscription->notes . "\n" . 'Reativada em ' . now()->format('d/m/Y H:i')
+    //         ]);
+
+    //         $this->toastSuccess('Subscrição reativada com sucesso!');
+    //     } catch (\Exception $e) {
+    //         $this->toastError('Erro ao reativar subscrição');
+    //     }
+    // }
 
     public function cancelSubscription($subscriptionId, $reason = null)
     {
