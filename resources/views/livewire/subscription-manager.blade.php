@@ -287,12 +287,12 @@
                                             $daysUntilDue = now()->diffInDays($subscription->next_invoice_date, false);
                                         @endphp
                                         @if ($daysUntilDue < 0)
-                                            <div class="text-xs text-red-600">{{ abs($daysUntilDue) }} dias em atraso
+                                            <div class="text-xs text-red-600">{{ intval(abs($daysUntilDue)) }} dias em atraso
                                             </div>
                                         @elseif($daysUntilDue <= 7)
-                                            <div class="text-xs text-yellow-600">{{ $daysUntilDue }} dias</div>
+                                            <div class="text-xs text-yellow-600">{{ intval($daysUntilDue) }} dias</div>
                                         @else
-                                            <div class="text-xs text-gray-500">{{ $daysUntilDue }} dias</div>
+                                            <div class="text-xs text-gray-500">{{ intval($daysUntilDue) }} dias</div>
                                         @endif
                                     @else
                                         <span class="text-sm text-gray-500">-</span>
