@@ -39,7 +39,7 @@ class Dashboard extends Component
             ]
         ]);
     }
-  private function getStats()
+private function getStats()
     {
         // Total de Clientes
         $totalCustomers = Customer::count();
