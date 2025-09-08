@@ -459,17 +459,17 @@
                             <!-- Page Title & Description -->
                             @if (isset($pageTitle) || isset($pageDescription))
                                 <div
-                                    class="py-6 {{ isset($breadcrumbs) ? 'border-t border-gray-100 dark:border-gray-700' : '' }}">
+                                    class="py-2 {{ isset($breadcrumbs) ? 'border-t border-gray-100 dark:border-gray-700' : '' }}">
                                     <div class="flex items-center justify-between">
                                         <div class="min-w-0 flex-1">
                                             @if (isset($pageTitle))
                                                 <h1
-                                                    class="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl sm:truncate">
+                                                    class="text-xl font-bold text-gray-900 dark:text-white sm:text-2xl sm:truncate">
                                                     {{ $pageTitle }}
                                                 </h1>
                                             @endif
                                             @if (isset($pageDescription))
-                                                <p class="mt-2 text-base text-gray-600 dark:text-gray-400 max-w-4xl">
+                                                <p class="mt- text-base text-gray-600 dark:text-gray-400 max-w-4xl">
                                                     {{ $pageDescription }}
                                                 </p>
                                             @endif
@@ -486,7 +486,7 @@
                             @endif
                              <!-- Breadcrumbs -->
                             @if (isset($breadcrumbs) && count($breadcrumbs) > 0)
-                                <nav class="flex pt-4 pb-2" aria-label="Breadcrumb">
+                                <nav class="flex pt-2 pb-2" aria-label="Breadcrumb">
                                     <ol role="list" class="flex items-center space-x-2 text-sm">
                                         <li>
                                             <a href="{{ route('dashboard') }}"
@@ -502,7 +502,7 @@
                                         </li>
                                         @foreach ($breadcrumbs as $crumb)
                                             <li class="flex items-center">
-                                                <svg class="h-4 w-4 text-gray-300 dark:text-gray-600 mx-2"
+                                                <svg class="h-4 w-4 text-gray-300 dark:text-gray-600 "
                                                     fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd"
                                                         d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
