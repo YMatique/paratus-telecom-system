@@ -314,10 +314,10 @@
                                     </div>
                                     @if ($invoice->status === 'pending' && $invoice->isOverdue())
                                         <div class="text-xs text-red-600">
-                                            {{ $invoice->getDaysOverdue() }} dias em atraso
+                                            {{ intval($invoice->getDaysOverdue()) }} dias em atraso
                                         </div>
                                     @elseif($invoice->status === 'pending')
-                                        @php $daysUntilDue = now()->diffInDays($invoice->due_date, false); @endphp
+                                        @php $daysUntilDue = intval(now()->diffInDays($invoice->due_date, false)); @endphp
                                         @if ($daysUntilDue <= 7)
                                             <div class="text-xs text-yellow-600">
                                                 {{ $daysUntilDue }} dias restantes
