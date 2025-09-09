@@ -426,7 +426,7 @@ class TicketManager extends Component
         $stats = [
             'total_open' => Ticket::open()->count(),
             'total_urgent' => Ticket::where('priority', 'urgent')->open()->count(),
-            'my_tickets' => Ticket::assignedTo(Auth::id())->open()->count(),
+            'my_tickets' => Ticket::where('assigned_to', Auth::id())->open()->count(),
             'unassigned' => Ticket::unassigned()->open()->count(),
             'resolved_today' => Ticket::whereDate('resolved_at', today())->count(),
             'avg_response_time' => $this->getAverageResponseTime(),
