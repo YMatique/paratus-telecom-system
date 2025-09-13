@@ -1,0 +1,109 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Definições -->
+  <defs>
+    <!-- Marcadores para setas -->
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#495057" />
+    </marker>
+  </defs>
+  
+  <!-- Título -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#212529">
+    Arquitetura MVC - Plataforma de Gestão Integrada
+  </text>
+  
+  <!-- VIEW -->
+  <rect x="50" y="80" width="180" height="120" rx="8" ry="8" 
+        fill="#f8f9fa" stroke="#6c757d" stroke-width="2"/>
+  <text x="140" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#495057">
+    VIEW
+  </text>
+  <text x="140" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#6c757d">
+    Interface do Usuário
+  </text>
+  <text x="140" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6c757d">
+    Templates Blade
+  </text>
+  <text x="140" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6c757d">
+    Dashboard, Formulários
+  </text>
+  
+  <!-- CONTROLLER -->
+  <rect x="310" y="80" width="180" height="120" rx="8" ry="8" 
+        fill="#f8f9fa" stroke="#6c757d" stroke-width="2"/>
+  <text x="400" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#495057">
+    CONTROLLER
+  </text>
+  <text x="400" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#6c757d">
+    Lógica de Controle
+  </text>
+  <text x="400" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6c757d">
+    Processa Requisições
+  </text>
+  <text x="400" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6c757d">
+    Coordena Model e View
+  </text>
+  
+  <!-- MODEL -->
+  <rect x="570" y="80" width="180" height="120" rx="8" ry="8" 
+        fill="#f8f9fa" stroke="#6c757d" stroke-width="2"/>
+  <text x="660" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#495057">
+    MODEL
+  </text>
+  <text x="660" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#6c757d">
+    Dados e Negócios
+  </text>
+  <text x="660" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6c757d">
+    Eloquent ORM
+  </text>
+  <text x="660" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6c757d">
+    Cliente, Plano, Ticket, Fatura
+  </text>
+  
+  <!-- Banco de Dados -->
+  <rect x="570" y="260" width="180" height="80" rx="8" ry="8" 
+        fill="#f8f9fa" stroke="#6c757d" stroke-width="2"/>
+  <text x="660" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#495057">
+    MySQL
+  </text>
+  <text x="660" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#6c757d">
+    Banco de Dados
+  </text>
+  <text x="660" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#6c757d">
+    Armazenamento Estruturado
+  </text>
+  
+  <!-- Setas -->
+  <!-- View → Controller -->
+  <line x1="230" y1="130" x2="310" y2="130" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="270" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">
+    Requisição
+  </text>
+  
+  <!-- Controller → View -->
+  <line x1="310" y1="160" x2="230" y2="160" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="270" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">
+    Resposta
+  </text>
+  
+  <!-- Controller → Model -->
+  <line x1="490" y1="130" x2="570" y2="130" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="530" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">
+    Consulta
+  </text>
+  
+  <!-- Model → Controller -->
+  <line x1="570" y1="160" x2="490" y2="160" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="530" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#495057">
+    Dados
+  </text>
+  
+  <!-- Model → Database -->
+  <line x1="660" y1="200" x2="660" y2="260" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="680" y="230" font-family="Arial, sans-serif" font-size="10" fill="#495057">
+    CRUD
+  </text>
+  
+  <!-- Database → Model -->
+  <line x1="640" y1="260" x2="640" y2="200" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>
