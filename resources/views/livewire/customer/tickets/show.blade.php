@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto p-4 md:p-6">
+<div class=" mx-auto p-4 md:p-6">
     {{-- Header com Status & Ações --}}
     <div class="mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
