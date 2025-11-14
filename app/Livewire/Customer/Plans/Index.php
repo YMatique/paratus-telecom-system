@@ -10,9 +10,6 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
-
-
-
 #[Layout('livewire.layouts.customer-portal')]
 #[Title('Planos Disponíveis - Portal do Cliente')]
 class Index extends Component
