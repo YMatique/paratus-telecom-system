@@ -11,7 +11,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-#[Layout('components.layouts.customer-auth')]
+#[Layout('livewire.layouts.customer-auth')]
 #[Title('Login - Portal do Cliente')]
 class Login extends Component
 {

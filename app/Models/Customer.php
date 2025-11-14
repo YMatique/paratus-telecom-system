@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class Customer extends Model
+class Customer extends Model implements AuthenticatableContract
 {
-     use HasFactory, SoftDeletes;
+     use HasFactory, SoftDeletes, Authenticatable;
 
     protected $fillable = [
         'type', 'name', 'document', 'document_type', 'email', 

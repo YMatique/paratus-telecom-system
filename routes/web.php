@@ -3,6 +3,8 @@
 use App\Livewire\ClientManager;
 use App\Livewire\Customer\Auth\Login;
 use App\Livewire\Customer\Auth\Register;
+use App\Livewire\Customer\Dashboard as CustomerDashboard;
+use App\Livewire\Customer\Subscriptions\Index;
 use App\Livewire\Dashboard;
 use App\Livewire\EquipmentManager;
 use App\Livewire\InvoiceManager;
@@ -78,27 +80,27 @@ Route::prefix('portal')->name('customer.')->group(function () {
     Route::middleware('auth:customer')->group(function () {
         
         // Dashboard
-        Route::get('/dashboard', Dashboard::class)->name('dashboard');
-/*
+        Route::get('/dashboard', CustomerDashboard::class)->name('dashboard');
+
         // Subscrições
-        Route::get('/subscriptions', SubscriptionsIndex::class)->name('subscriptions.index');
-        Route::get('/subscriptions/{id}', SubscriptionsShow::class)->name('subscriptions.show');
+        Route::get('/subscriptions', Index::class)->name('subscriptions.index');
+        // Route::get('/subscriptions/{id}', SubscriptionsShow::class)->name('subscriptions.show');
 
         // Faturas
-        Route::get('/invoices', InvoicesIndex::class)->name('invoices.index');
-        Route::get('/invoices/{id}', InvoicesShow::class)->name('invoices.show');
+        // Route::get('/invoices', InvoicesIndex::class)->name('invoices.index');
+        // Route::get('/invoices/{id}', InvoicesShow::class)->name('invoices.show');
 
         // Tickets
-        Route::get('/tickets', TicketsIndex::class)->name('tickets.index');
-        Route::get('/tickets/create', TicketsCreate::class)->name('tickets.create');
-        Route::get('/tickets/{id}', TicketsShow::class)->name('tickets.show');
+        // Route::get('/tickets', TicketsIndex::class)->name('tickets.index');
+        // Route::get('/tickets/create', TicketsCreate::class)->name('tickets.create');
+        // Route::get('/tickets/{id}', TicketsShow::class)->name('tickets.show');
 
         // Perfil
-        Route::get('/profile', ProfileEdit::class)->name('profile.edit');
+        // Route::get('/profile', ProfileEdit::class)->name('profile.edit');
 
         // Planos (para upgrade)
-        Route::get('/plans', PlansIndex::class)->name('plans.index');
-*/
+        // Route::get('/plans', PlansIndex::class)->name('plans.index');
+
     });
 });
 

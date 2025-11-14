@@ -78,7 +78,8 @@
                 <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Lembrar-me</span>
             </label>
 
-            <a href="{{ route('customer.password.request') }}" 
+            <a 
+            {{-- href="{{ route('customer.password.request') }}"  --}}
                wire:navigate
                class="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400">
                 Esqueceu a senha?

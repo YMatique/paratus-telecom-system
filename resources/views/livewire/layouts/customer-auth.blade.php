@@ -32,7 +32,7 @@
         </div>
 
         {{-- Card Principal --}}
-        <div class="w-full max-w-md">
+        <div class="w-full max-w-lg">
             <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl overflow-hidden">
                 {{ $slot }}
             </div>

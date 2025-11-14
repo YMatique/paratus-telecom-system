@@ -9,7 +9,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
-#[Layout('components.layouts.customer-portal')]
+#[Layout('livewire.layouts.customer-portal')]
 #[Title('Dashboard - Portal do Cliente')]
 class Dashboard extends Component
 {

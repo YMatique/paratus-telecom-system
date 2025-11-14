@@ -10,7 +10,8 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
-#[Layout('components.layouts.customer-auth')]
+
+#[Layout('livewire.layouts.customer-auth')]
 #[Title('Ativar Conta - Portal do Cliente')]
 class Register extends Component
 {

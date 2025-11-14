@@ -16,7 +16,8 @@
         </a>
 
         {{-- Subscrições --}}
-        <a href="{{ route('customer.subscriptions.index') }}" 
+        <a 
+        href="{{ route('customer.subscriptions.index') }}" 
            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ str_starts_with($currentRoute, 'customer.subscriptions') ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
@@ -25,7 +26,8 @@
         </a>
 
         {{-- Faturas --}}
-        <a href="{{ route('customer.invoices.index') }}" 
+        <a 
+        {{-- href="{{ route('customer.invoices.index') }}"  --}}
            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ str_starts_with($currentRoute, 'customer.invoices') ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -34,7 +36,8 @@
         </a>
 
         {{-- Tickets --}}
-        <a href="{{ route('customer.tickets.index') }}" 
+        <a 
+        {{-- href="{{ route('customer.tickets.index') }}"  --}}
            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ str_starts_with($currentRoute, 'customer.tickets') ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
@@ -43,7 +46,8 @@
         </a>
 
         {{-- Planos --}}
-        <a href="{{ route('customer.plans.index') }}" 
+        <a 
+        {{-- href="{{ route('customer.plans.index') }}"  --}}
            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ str_starts_with($currentRoute, 'customer.plans') ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -55,7 +59,8 @@
         <div class="my-4 border-t border-gray-200 dark:border-gray-700"></div>
 
         {{-- Perfil --}}
-        <a href="{{ route('customer.profile.edit') }}" 
+        <a 
+        {{-- href="{{ route('customer.profile.edit') }}"  --}}
            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ str_starts_with($currentRoute, 'customer.profile') ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -76,7 +81,8 @@
             <div>
                 <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Precisa de ajuda?</h4>
                 <p class="text-xs text-gray-600 dark:text-gray-400 mb-3">Nossa equipe está disponível 24/7</p>
-                <a href="{{ route('customer.tickets.create') }}" 
+                <a 
+                {{-- href="{{ route('customer.tickets.create') }}"  --}}
                    class="inline-flex items-center gap-2 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">
                     Abrir Ticket
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,7 +147,8 @@
             <span class="font-medium">Minhas Subscrições</span>
         </a>
 
-        <a href="{{ route('customer.invoices.index') }}" 
+        <a 
+        {{-- href="{{ route('customer.invoices.index') }}"  --}}
            @click="sidebarOpen = false"
            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ str_starts_with($currentRoute, 'customer.invoices') ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +157,8 @@
             <span class="font-medium">Faturas</span>
         </a>
 
-        <a href="{{ route('customer.tickets.index') }}" 
+        <a 
+        {{-- href="{{ route('customer.tickets.index') }}"  --}}
            @click="sidebarOpen = false"
            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ str_starts_with($currentRoute, 'customer.tickets') ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,7 +167,8 @@
             <span class="font-medium">Suporte</span>
         </a>
 
-        <a href="{{ route('customer.plans.index') }}" 
+        <a 
+        {{-- href="{{ route('customer.plans.index') }}"  --}}
            @click="sidebarOpen = false"
            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ str_starts_with($currentRoute, 'customer.plans') ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,7 +179,8 @@
 
         <div class="my-4 border-t border-gray-200 dark:border-gray-700"></div>
 
-        <a href="{{ route('customer.profile.edit') }}" 
+        <a 
+        {{-- href="{{ route('customer.profile.edit') }}"  --}}
            @click="sidebarOpen = false"
            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ str_starts_with($currentRoute, 'customer.profile') ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
