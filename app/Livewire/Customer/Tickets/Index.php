@@ -21,12 +21,18 @@ class Index extends Component
     public $filterStatus = 'open'; // all, open, in_progress, waiting_customer, resolved, closed
     public $filterPriority = 'all'; // all, low, normal, high, urgent
     public $search = '';
-
+   public $viewMode = 'cards'; // 'cards' ou 'list'
     public function mount()
     {
         $this->customer = Auth::guard('customer')->user();
     }
 
+ 
+
+public function setViewMode($mode)
+{
+    $this->viewMode = $mode;
+}
     /**
      * Filtrar por status
      */
