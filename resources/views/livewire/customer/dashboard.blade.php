@@ -54,7 +54,7 @@
                 </div>
             </div>
             <a 
-            {{-- href="{{ route('customer.invoices.index') }}"  --}}
+            href="{{ route('customer.invoices.index') }}" 
                wire:navigate
                class="mt-4 text-sm text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
                 Ver faturas
@@ -148,7 +148,7 @@
                                     </div>
                                 </div>
                                 <a 
-                                {{-- href="{{ route('customer.subscriptions.show', $subscription->id) }}"  --}}
+                                href="{{ route('customer.subscriptions.show', $subscription->id) }}" 
                                    wire:navigate
                                    class="px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition">
                                     Ver detalhes
@@ -254,7 +254,7 @@
                 <h3 class="font-semibold mb-4">Ações Rápidas</h3>
                 <div class="space-y-2">
                     <a 
-                    {{-- href="{{ route('customer.plans.index') }}"  --}}
+                    href="{{ route('customer.plans.index') }}" 
                        wire:navigate
                        class="block px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition">
                         ⚡ Fazer Upgrade

@@ -5,7 +5,10 @@ use App\Livewire\Customer\Auth\Login;
 use App\Livewire\Customer\Auth\Register;
 use App\Livewire\Customer\Dashboard as CustomerDashboard;
 use App\Livewire\Customer\Invoices\Index as InvoicesIndex;
-use App\Livewire\Customer\Subscriptions\Index;
+use App\Livewire\Customer\Invoices\Show as InvoicesShow;
+use App\Livewire\Customer\Plans\Index as PlansIndex;
+use App\Livewire\Customer\Subscriptions\Index as SubscriptionsIndex;
+use App\Livewire\Customer\Subscriptions\Show as SubscriptionsShow;
 use App\Livewire\Dashboard;
 use App\Livewire\EquipmentManager;
 use App\Livewire\InvoiceManager;
@@ -84,12 +87,12 @@ Route::prefix('portal')->name('customer.')->group(function () {
         Route::get('/dashboard', CustomerDashboard::class)->name('dashboard');
 
         // Subscrições
-        Route::get('/subscriptions', Index::class)->name('subscriptions.index');
-        // Route::get('/subscriptions/{id}', SubscriptionsShow::class)->name('subscriptions.show');
+        Route::get('/subscriptions', SubscriptionsIndex::class)->name('subscriptions.index');
+        Route::get('/subscriptions/{id}', SubscriptionsShow::class)->name('subscriptions.show');
 
         // Faturas
         Route::get('/invoices', InvoicesIndex::class)->name('invoices.index');
-        // Route::get('/invoices/{id}', InvoicesShow::class)->name('invoices.show');
+        Route::get('/invoices/{id}', InvoicesShow::class)->name('invoices.show');
 
         // Tickets
         // Route::get('/tickets', TicketsIndex::class)->name('tickets.index');
@@ -100,7 +103,7 @@ Route::prefix('portal')->name('customer.')->group(function () {
         // Route::get('/profile', ProfileEdit::class)->name('profile.edit');
 
         // Planos (para upgrade)
-        // Route::get('/plans', PlansIndex::class)->name('plans.index');
+        Route::get('/plans', PlansIndex::class)->name('plans.index');
 
     });
 });

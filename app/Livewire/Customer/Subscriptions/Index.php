@@ -10,7 +10,8 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Layout('components.layouts.customer-portal')]
+
+#[Layout('livewire.layouts.customer-portal')]
 #[Title('Minhas Subscrições - Portal do Cliente')]
 class Index extends Component
 {
