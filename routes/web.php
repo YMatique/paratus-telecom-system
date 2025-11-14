@@ -9,8 +9,8 @@ use App\Livewire\Customer\Invoices\Show as InvoicesShow;
 use App\Livewire\Customer\Plans\Index as PlansIndex;
 use App\Livewire\Customer\Subscriptions\Index as SubscriptionsIndex;
 use App\Livewire\Customer\Subscriptions\Show as SubscriptionsShow;
-use App\Livewire\Customer\Tickets\Index as TicketsIndex;
 use App\Livewire\Customer\Tickets\Create as TicketsCreate;
+use App\Livewire\Customer\Tickets\Index as TicketsIndex;
 use App\Livewire\Customer\Tickets\Show as TicketsShow;
 use App\Livewire\Dashboard;
 use App\Livewire\EquipmentManager;
@@ -24,6 +24,8 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\SubscriptionManager;
 use App\Livewire\TicketManager;
+use App\Models\Ticket;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -50,11 +52,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('tickets', TicketManager::class)->name('tickets');
 
     Route::get('reports', ReportGenerator::class)->name('reports');
-    
+
     Route::get('notifications', NotificationManager::class)->name('notifications');
 });
 Route::prefix('portal')->name('customer.')->group(function () {
-    
+
     /*
     |--------------------------------------------------------------------------
     | Autenticação (Guest)
@@ -72,10 +74,11 @@ Route::prefix('portal')->name('customer.')->group(function () {
     | Logout (POST)
     |--------------------------------------------------------------------------
     */
-    Route::post('/logout', function() {
+    Route::post('/logout', function () {
         Auth::guard('customer')->logout();
         request()->session()->invalidate();
         request()->session()->regenerateToken();
+
         return redirect()->route('customer.login');
     })->name('logout')->middleware('auth:customer');
 
@@ -85,7 +88,7 @@ Route::prefix('portal')->name('customer.')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware('auth:customer')->group(function () {
-        
+
         // Dashboard
         Route::get('/dashboard', CustomerDashboard::class)->name('dashboard');
 
@@ -102,6 +105,26 @@ Route::prefix('portal')->name('customer.')->group(function () {
         Route::get('/tickets/create', TicketsCreate::class)->name('tickets.create');
         Route::get('/tickets/{id}', TicketsShow::class)->name('tickets.show');
 
+        Route::get('/tickets/{ticket}/responses/{response}/attachments/{file}', function (Ticket $ticket, $response, $file) {
+            $customer = Auth::guard('customer')->user();
+            if ($ticket->customer_id !== $customer->id) {
+                abort(403);
+            }
+
+            $resp = $ticket->publicResponses()->skip($response)->first();
+            if (! $resp || ! isset($resp->attachments[$file])) {
+                abort(404);
+            }
+
+            $fileData = $resp->attachments[$file];
+            $path = storage_path('app/public/'.$fileData['path']);
+
+            if (! file_exists($path)) {
+                abort(404);
+            }
+
+            return response()->download($path, $fileData['name']);
+        })->name('customer.tickets.attachment');
         // Perfil
         // Route::get('/profile', ProfileEdit::class)->name('profile.edit');
 
@@ -119,6 +142,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
 
-
-
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

@@ -9,6 +9,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 
 #[Layout('livewire.layouts.customer-portal')]
@@ -16,6 +17,8 @@ use Livewire\Component;
 
 class Show extends Component
 {
+
+    use WithFileUploads;
     public Ticket $ticket;
     public string $response = '';
     public $attachments = [];
