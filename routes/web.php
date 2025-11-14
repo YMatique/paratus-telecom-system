@@ -4,6 +4,7 @@ use App\Livewire\ClientManager;
 use App\Livewire\Customer\Auth\Login;
 use App\Livewire\Customer\Auth\Register;
 use App\Livewire\Customer\Dashboard as CustomerDashboard;
+use App\Livewire\Customer\Invoices\Index as InvoicesIndex;
 use App\Livewire\Customer\Subscriptions\Index;
 use App\Livewire\Dashboard;
 use App\Livewire\EquipmentManager;
@@ -87,7 +88,7 @@ Route::prefix('portal')->name('customer.')->group(function () {
         // Route::get('/subscriptions/{id}', SubscriptionsShow::class)->name('subscriptions.show');
 
         // Faturas
-        // Route::get('/invoices', InvoicesIndex::class)->name('invoices.index');
+        Route::get('/invoices', InvoicesIndex::class)->name('invoices.index');
         // Route::get('/invoices/{id}', InvoicesShow::class)->name('invoices.show');
 
         // Tickets

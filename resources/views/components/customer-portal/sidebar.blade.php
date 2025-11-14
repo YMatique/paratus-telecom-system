@@ -27,7 +27,7 @@
 
         {{-- Faturas --}}
         <a 
-        {{-- href="{{ route('customer.invoices.index') }}"  --}}
+        href="{{ route('customer.invoices.index') }}" 
            class="flex items-center gap-3 px-4 py-3 rounded-lg transition {{ str_starts_with($currentRoute, 'customer.invoices') ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
