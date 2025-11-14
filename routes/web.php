@@ -12,6 +12,7 @@ use App\Livewire\Customer\Subscriptions\Show as SubscriptionsShow;
 use App\Livewire\Customer\Tickets\Create as TicketsCreate;
 use App\Livewire\Customer\Tickets\Index as TicketsIndex;
 use App\Livewire\Customer\Tickets\Show as TicketsShow;
+use App\Livewire\Customer\Profile\Edit as ProfileEdit;
 use App\Livewire\Dashboard;
 use App\Livewire\EquipmentManager;
 use App\Livewire\InvoiceManager;
@@ -126,7 +127,7 @@ Route::prefix('portal')->name('customer.')->group(function () {
             return response()->download($path, $fileData['name']);
         })->name('customer.tickets.attachment');
         // Perfil
-        // Route::get('/profile', ProfileEdit::class)->name('profile.edit');
+        Route::get('/profile', ProfileEdit::class)->name('profile.edit');
 
         // Planos (para upgrade)
         Route::get('/plans', PlansIndex::class)->name('plans.index');

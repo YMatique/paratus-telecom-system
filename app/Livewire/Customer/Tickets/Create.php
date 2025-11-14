@@ -79,7 +79,7 @@ class Create extends Component
 
         // Criar ticket
         $ticket = $this->customer->tickets()->create([
-            'ticket_number' => 'TKT-' . strtoupper(uniqid()),
+            // 'ticket_number' => 'TKT-' . strtoupper(uniqid()),
             'subscription_id' => $this->subscription_id,
             'subject' => $this->subject,
             'description' => $this->description,
@@ -88,6 +88,17 @@ class Create extends Component
             'status' => 'open',
             'opened_at' => now(),
         ]);
+        /**
+         * $ticket = Ticket::create([
+                'customer_id' => $this->customer->id,
+                'subscription_id' => $this->subscription_id,
+                'subject' => $this->subject,
+                'description' => $this->description,
+                'category' => $this->category,
+                'priority' => $this->priority,
+                'status' => 'open',
+            ]);
+         */
 
         session()->flash('success', 'Ticket criado com sucesso! Nossa equipe responderá em breve.');
 
