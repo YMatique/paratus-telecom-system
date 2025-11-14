@@ -13,7 +13,8 @@ class Customer extends Model
 
     protected $fillable = [
         'type', 'name', 'document', 'document_type', 'email', 
-        'phone', 'whatsapp','company_name', 'status', 'notes'
+        'phone', 'whatsapp','company_name', 'status', 'notes',
+        'password', 'last_login_at', 'last_login_ip'
     ];
 
     protected $casts = [
@@ -21,6 +22,8 @@ class Customer extends Model
         'type' => 'string',
         'document_type' => 'string',
         'status' => 'string',
+         'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime',
     ];
 
     // Relationships
@@ -120,5 +123,22 @@ class Customer extends Model
     public function isActive(): bool
     {
         return $this->status === 'active';
+    }
+
+    // new for customer portal
+      public function hasPortalAccess(): bool
+    {
+        return !empty($this->password) && !empty($this->email);
+    }
+
+    /**
+     * Atualizar último login
+     */
+    public function updateLastLogin(): void
+    {
+        $this->update([
+            'last_login_at' => now(),
+            'last_login_ip' => request()->ip(),
+        ]);
     }
 }
