@@ -82,7 +82,7 @@
                 <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-1">Precisa de ajuda?</h4>
                 <p class="text-xs text-gray-600 dark:text-gray-400 mb-3">Nossa equipe está disponível 24/7</p>
                 <a 
-                {{-- href="{{ route('customer.tickets.create') }}"  --}}
+                href="{{ route('customer.tickets.create') }}" 
                    class="inline-flex items-center gap-2 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">
                     Abrir Ticket
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

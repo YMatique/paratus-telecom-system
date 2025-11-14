@@ -11,6 +11,7 @@ use App\Livewire\Customer\Subscriptions\Index as SubscriptionsIndex;
 use App\Livewire\Customer\Subscriptions\Show as SubscriptionsShow;
 use App\Livewire\Customer\Tickets\Index as TicketsIndex;
 use App\Livewire\Customer\Tickets\Create as TicketsCreate;
+use App\Livewire\Customer\Tickets\Show as TicketsShow;
 use App\Livewire\Dashboard;
 use App\Livewire\EquipmentManager;
 use App\Livewire\InvoiceManager;
@@ -99,7 +100,7 @@ Route::prefix('portal')->name('customer.')->group(function () {
         // Tickets
         Route::get('/tickets', TicketsIndex::class)->name('tickets.index');
         Route::get('/tickets/create', TicketsCreate::class)->name('tickets.create');
-        // Route::get('/tickets/{id}', TicketsShow::class)->name('tickets.show');
+        Route::get('/tickets/{id}', TicketsShow::class)->name('tickets.show');
 
         // Perfil
         // Route::get('/profile', ProfileEdit::class)->name('profile.edit');
